@@ -124,8 +124,10 @@ var app = builder.Build();
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value ?? "";
-    // Avoid self-referencing feedback loops from logs polling or non-API routes
-    if (!path.StartsWith("/api") || path.StartsWith("/api/admin/logs", StringComparison.OrdinalIgnoreCase))
+    // Avoid self-referencing feedback loops from logs polling, health checks, or non-API routes
+    if (!path.StartsWith("/api") 
+        || path.StartsWith("/api/admin/logs", StringComparison.OrdinalIgnoreCase) 
+        || path.EndsWith("/health", StringComparison.OrdinalIgnoreCase))
     {
         await next();
         return;
@@ -207,5 +209,53 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Health & Status check endpoints (for Docker, uptime pingers, and browser inspection)
+app.MapGet("/", () => Results.Ok(new
+{
+    status = "Healthy",
+    service = "Kotoba API",
+    timestamp = DateTime.UtcNow
+}));
+
+app.MapGet("/health", async (KotobaDbContext db) =>
+{
+    bool dbConnected = false;
+    try
+    {
+        dbConnected = await db.Database.CanConnectAsync();
+    }
+    catch
+    {
+        dbConnected = false;
+    }
+
+    return Results.Ok(new
+    {
+        status = dbConnected ? "Healthy" : "Degraded",
+        database = dbConnected ? "Connected" : "Disconnected",
+        timestamp = DateTime.UtcNow
+    });
+});
+
+app.MapGet("/api/health", async (KotobaDbContext db) =>
+{
+    bool dbConnected = false;
+    try
+    {
+        dbConnected = await db.Database.CanConnectAsync();
+    }
+    catch
+    {
+        dbConnected = false;
+    }
+
+    return Results.Ok(new
+    {
+        status = dbConnected ? "Healthy" : "Degraded",
+        database = dbConnected ? "Connected" : "Disconnected",
+        timestamp = DateTime.UtcNow
+    });
+});
 
 app.Run();
