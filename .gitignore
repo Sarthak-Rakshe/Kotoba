@@ -5,3 +5,25 @@
 
 # Backend
 Backend/.env
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# User-specific files
+*.users
+*.suo
+
+# Visual Studio
+.vs/
+
+# Rider
+.idea/
+
+# Test results
+TestResults/
