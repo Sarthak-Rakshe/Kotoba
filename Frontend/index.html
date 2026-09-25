@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#090d16" />
+    <meta name="description" content="Kotoba is a modern Japanese learning web application and Spaced Repetition System (SRS) for mastering Radicals, Kanji, and Vocabulary." />
+    <title>Kotoba · Japanese Spaced Repetition System</title>
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('kotoba_theme');
+          var theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          }
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

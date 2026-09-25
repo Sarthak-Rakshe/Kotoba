@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Noto+Sans+JP:wght@400..800&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *, [data-theme=dark], [data-theme=dark] *));
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-jp: 'Noto Sans JP', 'Hiragino Sans', 'Meiryo', sans-serif;
+
+  /* Color Hunt Palette: #8B9A6E, #F7F2EB, #EAE2D6, #EEEEEE */
+  --color-sage: #8b9a6e;
+  --color-sage-hover: #78865f;
+  --color-sage-light: rgba(139, 154, 110, 0.15);
+  
+  --bg-app: #f7f2eb;
+  --bg-surface: #ffffff;
+  --bg-elevated: #eae2d6;
+  --bg-muted: #f0e9df;
+  
+  --border-subtle: #eae2d6;
+  --border-prominent: #d8cfc0;
+  
+  --text-primary: #282c24;
+  --text-secondary: #5c6356;
+  --text-muted: #8a9184;
+
+  /* Authentic WaniKani Subject Colors */
+  --wk-radical: #00a1f1;
+  --wk-radical-dark: #008cd2;
+  --wk-radical-bg: rgba(0, 161, 241, 0.12);
+  
+  --wk-kanji: #f100a1;
+  --wk-kanji-dark: #d2008c;
+  --wk-kanji-bg: rgba(241, 0, 161, 0.12);
+  
+  --wk-vocab: #a100f1;
+  --wk-vocab-dark: #8c00d2;
+  --wk-vocab-bg: rgba(161, 0, 241, 0.12);
+}
+
+/* Dark Mode: Deep Earth Charcoal & Soft Sage */
+html.dark, [data-theme=dark] {
+  --color-sage: #9eb282;
+  --color-sage-hover: #afc393;
+  --color-sage-light: rgba(158, 178, 130, 0.2);
+
+  --bg-app: #141712;
+  --bg-surface: #1b1f18;
+  --bg-elevated: #242a20;
+  --bg-muted: #1e231b;
+
+  --border-subtle: #2b3327;
+  --border-prominent: #3a4535;
+
+  --text-primary: #f7f2eb;
+  --text-secondary: #c6cfbe;
+  --text-muted: #8b9684;
+
+  --wk-radical-bg: rgba(0, 161, 241, 0.2);
+  --wk-kanji-bg: rgba(241, 0, 161, 0.2);
+  --wk-vocab-bg: rgba(161, 0, 241, 0.2);
+}
+
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-japanese {
+  font-family: var(--font-jp);
+}
+
+/* Modern Minimalist Card Containers */
+.minimal-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 8px -2px rgba(40, 44, 36, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.minimal-card:hover {
+  border-color: var(--border-prominent);
+}
+
+.glass-panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 16px -4px rgba(40, 44, 36, 0.05);
+}
+
+html.dark .glass-panel, [data-theme=dark] .glass-panel {
+  background-color: #1b1f18;
+  border-color: #2b3327;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+}
+
+/* Clean WaniKani Accent Helpers */
+.badge-radical {
+  background-color: var(--wk-radical);
+  color: #ffffff;
+}
+
+.badge-kanji {
+  background-color: var(--wk-kanji);
+  color: #ffffff;
+}
+
+.badge-vocab {
+  background-color: var(--wk-vocab);
+  color: #ffffff;
+}
+
+/* Minimalist Button System */
+.btn-primary {
+  background-color: var(--color-sage);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-sage-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--border-prominent);
+}
+
+/* Japanese minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-prominent);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Loading screen tip card fade-up animation */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
