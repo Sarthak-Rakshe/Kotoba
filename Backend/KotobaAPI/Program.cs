@@ -73,12 +73,32 @@ builder.Services.AddRateLimiter(options =>
 // CORS
 builder.Services.AddCors(options =>
 {
+    var allowedOriginsEnv = builder.Configuration["ALLOWED_ORIGINS"] ?? builder.Configuration["Cors:AllowedOrigins"];
+    var extraOrigins = string.IsNullOrWhiteSpace(allowedOriginsEnv)
+        ? Array.Empty<string>()
+        : allowedOriginsEnv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.SetIsOriginAllowed(origin =>
+        {
+            if (string.IsNullOrEmpty(origin)) return false;
+            try
+            {
+                var uri = new Uri(origin);
+                return uri.Host == "localhost"
+                    || uri.Host == "127.0.0.1"
+                    || uri.Host.EndsWith(".pages.dev", StringComparison.OrdinalIgnoreCase)
+                    || extraOrigins.Contains(origin, StringComparer.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        })
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
 

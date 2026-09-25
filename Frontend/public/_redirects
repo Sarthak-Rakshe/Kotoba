@@ -1,0 +1,2 @@
+# Cloudflare Pages SPA Routing (Ensures React Router handles all subroutes without 404s)
+/*    /index.html   200

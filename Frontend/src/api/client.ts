@@ -9,8 +9,8 @@ import type {
   SubjectSummaryDto,
   SubjectType
 } from '../types';
-
-const API_BASE = '/api';
+const rawBase = import.meta.env.VITE_API_URL?.trim();
+const API_BASE = rawBase ? rawBase.replace(/\/+$/, '') : '/api';
 
 export const getAuthToken = (): string | null => {
   return localStorage.getItem('kotoba_token');
